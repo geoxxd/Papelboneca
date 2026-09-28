@@ -18,13 +18,11 @@ import { Footer } from './components/Footer';
 import { StickyBottomCta } from './components/StickyBottomCta';
 import { PricingPlan } from './types';
 import { PRICING_PLANS, ALEGRIA_SPECIAL_OFFER } from './data/content';
+import { AlegriaOfferModal } from './components/AlegriaOfferModal';
 
-// Code-split modals so they don't block initial page load / TBT
+// Code-split CheckoutModal
 const CheckoutModal = lazy(() =>
   import('./components/CheckoutModal').then((m) => ({ default: m.CheckoutModal }))
-);
-const AlegriaOfferModal = lazy(() =>
-  import('./components/AlegriaOfferModal').then((m) => ({ default: m.AlegriaOfferModal }))
 );
 
 export default function App() {
@@ -124,17 +122,18 @@ export default function App() {
       {/* Sticky Bottom Bar on Mobile */}
       <StickyBottomCta onCtaClick={scrollToPricing} />
 
+      {/* Instant Upsell Offer Modal */}
+      {isAlegriaOfferOpen && (
+        <AlegriaOfferModal
+          isOpen={isAlegriaOfferOpen}
+          onClose={() => setIsAlegriaOfferOpen(false)}
+          onAcceptAlegria={handleAcceptAlegriaOffer}
+          onContinueBasic={handleContinueWithBasic}
+        />
+      )}
+
       {/* Lazy Modals loaded on-demand */}
       <Suspense fallback={null}>
-        {isAlegriaOfferOpen && (
-          <AlegriaOfferModal
-            isOpen={isAlegriaOfferOpen}
-            onClose={() => setIsAlegriaOfferOpen(false)}
-            onAcceptAlegria={handleAcceptAlegriaOffer}
-            onContinueBasic={handleContinueWithBasic}
-          />
-        )}
-
         {isCheckoutOpen && (
           <CheckoutModal
             isOpen={isCheckoutOpen}

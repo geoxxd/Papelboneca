@@ -24,11 +24,11 @@ export const AlegriaOfferModal: React.FC<AlegriaOfferModalProps> = ({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden my-4 border-2 border-yellow-400 animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden my-4 border-2 border-yellow-400 transform-gpu will-change-transform animate-in fade-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Urgency Header */}
