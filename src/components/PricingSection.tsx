@@ -21,9 +21,11 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onSelectPlan, on
 
   return (
     <section
-      id="precos"
-      className="py-16 sm:py-24 bg-gradient-to-b from-[#D91680] via-[#C026D3] to-[#A21CAF] text-white relative overflow-hidden"
+      id="ofertas"
+      className="scroll-mt-14 py-16 sm:py-24 bg-gradient-to-b from-[#D91680] via-[#C026D3] to-[#A21CAF] text-white relative overflow-hidden"
     >
+      {/* Anchor for precos and ofertas */}
+      <span id="precos" className="sr-only">Seção de Ofertas</span>
       {/* Playful background sparkles */}
       <div className="absolute top-0 inset-x-0 h-40 bg-white/5 blur-2xl pointer-events-none" />
       

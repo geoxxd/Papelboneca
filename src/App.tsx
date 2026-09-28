@@ -33,11 +33,22 @@ export default function App() {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(PRICING_PLANS[1]); // Default to Alegria + Bônus
 
   const scrollToPricing = () => {
-    const el = document.getElementById('precos');
+    const el = document.getElementById('ofertas') || document.getElementById('precos');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      setIsCheckoutOpen(true);
+      const rect = el.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const targetY = rect.top + scrollTop - 45; // Offset for sticky top urgency bar
+      
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: 'smooth',
+      });
+
+      try {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch {
+        // Fallback already handled by window.scrollTo
+      }
     }
   };
 
