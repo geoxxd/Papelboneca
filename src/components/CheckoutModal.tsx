@@ -38,6 +38,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (currentPlan.checkoutUrl) {
+      window.location.href = currentPlan.checkoutUrl;
+      return;
+    }
     setIsSuccess(true);
   };
 
@@ -151,14 +155,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     }`}
                   >
                     <span className="absolute -top-2 right-2 bg-yellow-400 text-slate-900 text-[9px] font-black px-1.5 py-0.2 rounded-full uppercase">
-                      {currentPlan.id === 'alegria_special' ? 'Oferta R$ 17,90' : 'Mais Escolhido'}
+                      {currentPlan.id === 'alegria_special' ? 'Oferta R$ 16,90' : 'Mais Escolhido'}
                     </span>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-black text-slate-800">
                         {currentPlan.id === 'alegria_special' ? 'Pacote Alegria' : 'Pacote Alegria'}
                       </span>
                       <span className="text-xs font-black text-emerald-600">
-                        R$ {currentPlan.id === 'alegria_special' ? '17,90' : '24,90'}
+                        R$ {currentPlan.id === 'alegria_special' ? '16,90' : '24,90'}
                       </span>
                     </div>
                     <span className="text-[10px] text-pink-700 font-bold block mt-0.5">

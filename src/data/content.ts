@@ -136,6 +136,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Acesso vitalício',
     ],
     ctaText: 'QUERO O BÁSICO',
+    checkoutUrl: 'https://pay.lowify.com.br/checkout.php?product_id=Abi8Xx',
   },
   {
     id: 'premium',
@@ -161,6 +162,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Atualizações mensais com novos temas',
     ],
     ctaText: 'QUERO O PACOTE COMPLETO',
+    checkoutUrl: 'https://pay.lowify.com.br/go.php?offer=9f3a1b8f',
   },
 ];
 
@@ -169,7 +171,7 @@ export const ALEGRIA_SPECIAL_OFFER: PricingPlan = {
   name: 'PACOTE ALEGRIA + BÔNUS (OFERTA EXCLUSIVA)',
   popular: true,
   originalPrice: 24.9,
-  price: 17.9,
+  price: 16.9,
   discountPercentage: 85,
   highlightText: 'Oferta especial de oportunidade única',
   features: [
@@ -187,7 +189,8 @@ export const ALEGRIA_SPECIAL_OFFER: PricingPlan = {
     '120 Casinhas e cômodos de bonecas',
     'Atualizações mensais com novos temas',
   ],
-  ctaText: 'SIM! QUERO O PACOTE ALEGRIA POR R$ 17,90',
+  ctaText: 'SIM! QUERO O PACOTE ALEGRIA POR R$ 16,90',
+  checkoutUrl: 'https://pay.lowify.com.br/go.php?offer=1b1b44d3',
 };
 
 export const FAQS: FaqItem[] = [

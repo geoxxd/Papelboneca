@@ -27,4 +27,5 @@ export interface PricingPlan {
   exclusiveBonuses?: string[];
   ctaText: string;
   highlightText?: string;
+  checkoutUrl?: string;
 }

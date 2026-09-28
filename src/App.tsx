@@ -59,14 +59,12 @@ export default function App() {
 
   const handleAcceptAlegriaOffer = (plan: PricingPlan) => {
     setIsAlegriaOfferOpen(false);
-    setSelectedPlan(plan || ALEGRIA_SPECIAL_OFFER);
-    setIsCheckoutOpen(true);
+    window.location.href = plan?.checkoutUrl || 'https://pay.lowify.com.br/go.php?offer=1b1b44d3';
   };
 
   const handleContinueWithBasic = (plan: PricingPlan) => {
     setIsAlegriaOfferOpen(false);
-    setSelectedPlan(plan || PRICING_PLANS[0]);
-    setIsCheckoutOpen(true);
+    window.location.href = plan?.checkoutUrl || 'https://pay.lowify.com.br/checkout.php?product_id=Abi8Xx';
   };
 
   return (

@@ -69,10 +69,10 @@ export const AlegriaOfferModal: React.FC<AlegriaOfferModalProps> = ({
                 </span>
                 <div className="flex items-baseline justify-center gap-1 mt-0.5">
                   <span className="text-2xl font-black text-emerald-600">R$</span>
-                  <span className="text-5xl font-black text-emerald-600 tracking-tight">17,90</span>
+                  <span className="text-5xl font-black text-emerald-600 tracking-tight">16,90</span>
                 </div>
                 <span className="text-xs font-black text-pink-700 block mt-1">
-                  (Por apenas R$ 8,00 a mais do que o plano básico!)
+                  (Por apenas R$ 7,00 a mais do que o plano básico!)
                 </span>
               </div>
             </div>
@@ -118,27 +118,34 @@ export const AlegriaOfferModal: React.FC<AlegriaOfferModalProps> = ({
           </div>
 
           {/* Accept Offer Button */}
-          <div className="space-y-2.5 pt-1">
-            <button
+          <div className="space-y-3 pt-1">
+            <a
+              href={ALEGRIA_SPECIAL_OFFER.checkoutUrl || "https://pay.lowify.com.br/go.php?offer=1b1b44d3"}
               onClick={() => onAcceptAlegria(ALEGRIA_SPECIAL_OFFER)}
-              className="w-full py-4 px-4 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl font-black text-sm sm:text-base shadow-lg shadow-emerald-500/30 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-4 px-4 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl font-black text-sm sm:text-base shadow-lg shadow-emerald-500/30 transition transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer text-center"
             >
               <Sparkles className="w-4 h-4 text-yellow-300" />
-              <span>SIM! QUERO O PACOTE ALEGRIA POR R$ 17,90</span>
+              <span>SIM! QUERO O PACOTE ALEGRIA POR R$ 16,90</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
 
             {/* Decline / Continue with Basic */}
-            <button
-              onClick={() => onContinueBasic(basicPlan)}
-              className="w-full py-2.5 text-center text-xs font-semibold text-slate-400 hover:text-slate-600 transition cursor-pointer underline"
-            >
-              Não, obrigado. Quero apenas o Básico por R$ 9,90 &rarr;
-            </button>
+            <div className="text-center pt-1 space-y-1">
+              <a
+                href={basicPlan?.checkoutUrl || "https://pay.lowify.com.br/checkout.php?product_id=Abi8Xx"}
+                onClick={() => onContinueBasic(basicPlan)}
+                className="w-full py-1.5 text-center text-xs sm:text-sm font-bold text-slate-600 hover:text-slate-900 transition cursor-pointer underline block"
+              >
+                Não, obrigado. Quero apenas o Básico por R$ 9,90 &rarr;
+              </a>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium">
+                (Ao clicar acima, você será redirecionada para o checkout seguro de R$ 9,90)
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-600 font-semibold pt-1">
+            <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" />
             <span>Garantia de 7 dias mantida · Pagamento Seguro</span>
           </div>
 
