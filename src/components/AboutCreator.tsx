@@ -22,9 +22,13 @@ export const AboutCreator: React.FC = () => {
                   <img
                     src={ASSETS.momAvatar}
                     alt="Lúcia Oliveira"
+                    width={176}
+                    height={176}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = '/src/assets/images/Lucia.png';
+                      (e.target as HTMLImageElement).src = '/src/assets/images/Lucia.webp';
                     }}
                   />
                 </div>

@@ -106,6 +106,9 @@ export const WhatYouReceive: React.FC = () => {
                 <img
                   src={photo.url}
                   alt={photo.title}
+                  width={288}
+                  height={216}
+                  decoding="async"
                   className="w-full h-full object-cover group-hover/card:scale-108 transition-transform duration-500 select-none"
                   loading="lazy"
                 />

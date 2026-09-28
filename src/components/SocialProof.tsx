@@ -276,8 +276,10 @@ export const SocialProof: React.FC = () => {
                           <img
                             src={slide.testimonial.avatar}
                             alt={slide.testimonial.name}
+                            width={48}
+                            height={48}
                             className="w-12 h-12 rounded-full object-cover border-2 border-pink-300 bg-pink-100"
-                            loading="eager"
+                            loading="lazy"
                             decoding="async"
                           />
                           <div>
@@ -322,8 +324,10 @@ export const SocialProof: React.FC = () => {
                           <img
                             src={slide.photoUrl}
                             alt={slide.photoTitle || 'Prova social real'}
+                            width={260}
+                            height={300}
                             className="max-h-[300px] w-auto max-w-full object-contain rounded-xl group-hover/img:scale-[1.03] transition-transform duration-300"
-                            loading="eager"
+                            loading="lazy"
                             decoding="async"
                           />
                           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-2xs rounded-xl">

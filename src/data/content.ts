@@ -1,21 +1,21 @@
 import { Testimonial, FaqItem, PricingPlan } from '../types';
 
 export const ASSETS = {
-  heroPhoneCut: '/src/assets/images/phone_mockup_cutting_1790338619001.jpg',
+  heroPhoneCut: '/src/assets/images/phone_mockup_cutting_1790338619001.webp',
   heroVideo: '/storage/video.mp4',
   heroCanvaEmbed: '',
-  videoCover: '/storage/capa_video.png',
-  momAvatar: '/storage/Lucia.png',
-  childCraft1: '/src/assets/images/child_playing_craft_1_1790338650695.jpg',
-  paperDollFlatlay: '/src/assets/images/paper_doll_flatlay_1790338663775.jpg',
-  twoGirlsPlaying: '/src/assets/images/two_girls_playing_1790338677187.jpg',
-  prova1: '/storage/prova_social_1.png',
-  prova2: '/storage/prova_social_2.png?v=2',
-  provaKid1: '/storage/prova_kid_1.jpg',
-  provaKid2: '/storage/prova_kid_2.jpg',
-  provaKid3: '/storage/prova_kid_3.jpg',
-  provaKid4: '/storage/prova_kid_4.jpg',
-  provaKid5: '/storage/prova_kid_5.jpg',
+  videoCover: '/storage/capa_video.webp',
+  momAvatar: '/storage/Lucia.webp',
+  childCraft1: '/src/assets/images/child_playing_craft_1_1790338650695.webp',
+  paperDollFlatlay: '/src/assets/images/paper_doll_flatlay_1790338663775.webp',
+  twoGirlsPlaying: '/src/assets/images/two_girls_playing_1790338677187.webp',
+  prova1: '/storage/prova_social_1.webp',
+  prova2: '/storage/prova_social_2.webp',
+  provaKid1: '/storage/prova_kid_1.webp',
+  provaKid2: '/storage/prova_kid_2.webp',
+  provaKid3: '/storage/prova_kid_3.webp',
+  provaKid4: '/storage/prova_kid_4.webp',
+  provaKid5: '/storage/prova_kid_5.webp',
 };
 
 export const WHAT_YOU_RECEIVE_ITEMS = [

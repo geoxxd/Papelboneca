@@ -122,7 +122,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                     loop
                     muted={isMuted}
                     playsInline
-                    preload="auto"
+                    preload="none"
                     onPlay={() => {
                       setIsPaused(false);
                       setIsPlaying(true);
@@ -142,6 +142,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                       <img
                         src={ASSETS.videoCover}
                         alt="Apresentação do material"
+                        width={320}
+                        height={568}
+                        loading="eager"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                       {/* Película escura suave para dar contraste aos botões mantendo a mulher visível */}

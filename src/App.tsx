@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { UrgencyBar } from './components/UrgencyBar';
 import { HeroSection } from './components/HeroSection';
 import { WhatYouReceive } from './components/WhatYouReceive';
@@ -15,11 +15,17 @@ import { CopyrightDisclaimer } from './components/CopyrightDisclaimer';
 import { FaqSection } from './components/FaqSection';
 import { FinalCta } from './components/FinalCta';
 import { Footer } from './components/Footer';
-import { CheckoutModal } from './components/CheckoutModal';
-import { AlegriaOfferModal } from './components/AlegriaOfferModal';
 import { StickyBottomCta } from './components/StickyBottomCta';
 import { PricingPlan } from './types';
 import { PRICING_PLANS, ALEGRIA_SPECIAL_OFFER } from './data/content';
+
+// Code-split modals so they don't block initial page load / TBT
+const CheckoutModal = lazy(() =>
+  import('./components/CheckoutModal').then((m) => ({ default: m.CheckoutModal }))
+);
+const AlegriaOfferModal = lazy(() =>
+  import('./components/AlegriaOfferModal').then((m) => ({ default: m.AlegriaOfferModal }))
+);
 
 export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -109,21 +115,26 @@ export default function App() {
       {/* Sticky Bottom Bar on Mobile */}
       <StickyBottomCta onCtaClick={scrollToPricing} />
 
-      {/* Pop-up Especial: Oferta Pacote Alegria por R$ 17,90 */}
-      <AlegriaOfferModal
-        isOpen={isAlegriaOfferOpen}
-        onClose={() => setIsAlegriaOfferOpen(false)}
-        onAcceptAlegria={handleAcceptAlegriaOffer}
-        onContinueBasic={handleContinueWithBasic}
-      />
+      {/* Lazy Modals loaded on-demand */}
+      <Suspense fallback={null}>
+        {isAlegriaOfferOpen && (
+          <AlegriaOfferModal
+            isOpen={isAlegriaOfferOpen}
+            onClose={() => setIsAlegriaOfferOpen(false)}
+            onAcceptAlegria={handleAcceptAlegriaOffer}
+            onContinueBasic={handleContinueWithBasic}
+          />
+        )}
 
-      {/* Interactive Checkout Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        selectedPlan={selectedPlan}
-        onSelectPlan={(plan) => setSelectedPlan(plan)}
-      />
+        {isCheckoutOpen && (
+          <CheckoutModal
+            isOpen={isCheckoutOpen}
+            onClose={() => setIsCheckoutOpen(false)}
+            selectedPlan={selectedPlan}
+            onSelectPlan={(plan) => setSelectedPlan(plan)}
+          />
+        )}
+      </Suspense>
     </div>
   );
 }
