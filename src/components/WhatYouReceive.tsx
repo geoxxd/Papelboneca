@@ -412,19 +412,23 @@ export const WhatYouReceive: React.FC<WhatYouReceiveProps> = ({ onCtaClick }) =>
             </div>
 
             {/* Dots */}
-            <div className="flex items-center justify-center gap-2 mt-4">
-              {DEMONSTRATION_ITEMS.map((_, index) => (
+            <div className="flex items-center justify-center gap-1 mt-4">
+              {DEMONSTRATION_ITEMS.map((item, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => handleDotClick(index)}
-                  aria-label={`Ver folha ${index + 1}`}
-                  className={`transition-all duration-300 rounded-full h-2 cursor-pointer ${
-                    activeSlide === index
-                      ? 'w-7 bg-gradient-to-r from-[#FF007A] to-[#C026D3]'
-                      : 'w-2 bg-pink-200 hover:bg-pink-300'
-                  }`}
-                />
+                  aria-label={`Ver folha ${index + 1}: ${item.title}`}
+                  className="p-2 flex items-center justify-center cursor-pointer min-w-[36px] min-h-[36px]"
+                >
+                  <span
+                    className={`transition-all duration-300 rounded-full h-2.5 ${
+                      activeSlide === index
+                        ? 'w-8 bg-gradient-to-r from-[#FF007A] to-[#C026D3]'
+                        : 'w-2.5 bg-pink-200 hover:bg-pink-300'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
 

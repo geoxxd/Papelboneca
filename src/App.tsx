@@ -3,21 +3,43 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { UrgencyBar } from './components/UrgencyBar';
 import { HeroSection } from './components/HeroSection';
-import { WhatYouReceive } from './components/WhatYouReceive';
-import { AboutCreator } from './components/AboutCreator';
-import { SocialProof } from './components/SocialProof';
-import { PricingSection } from './components/PricingSection';
-import { GuaranteeSection } from './components/GuaranteeSection';
-import { CopyrightDisclaimer } from './components/CopyrightDisclaimer';
-import { FaqSection } from './components/FaqSection';
-import { FinalCta } from './components/FinalCta';
-import { Footer } from './components/Footer';
-import { StickyBottomCta } from './components/StickyBottomCta';
 import { PricingPlan } from './types';
-import { PRICING_PLANS, ALEGRIA_SPECIAL_OFFER } from './data/content';
+import { PRICING_PLANS } from './data/content';
+
+// Below-the-fold components code-split for maximum mobile performance & minimal TBT
+const WhatYouReceive = lazy(() =>
+  import('./components/WhatYouReceive').then((m) => ({ default: m.WhatYouReceive }))
+);
+const AboutCreator = lazy(() =>
+  import('./components/AboutCreator').then((m) => ({ default: m.AboutCreator }))
+);
+const SocialProof = lazy(() =>
+  import('./components/SocialProof').then((m) => ({ default: m.SocialProof }))
+);
+const PricingSection = lazy(() =>
+  import('./components/PricingSection').then((m) => ({ default: m.PricingSection }))
+);
+const GuaranteeSection = lazy(() =>
+  import('./components/GuaranteeSection').then((m) => ({ default: m.GuaranteeSection }))
+);
+const CopyrightDisclaimer = lazy(() =>
+  import('./components/CopyrightDisclaimer').then((m) => ({ default: m.CopyrightDisclaimer }))
+);
+const FaqSection = lazy(() =>
+  import('./components/FaqSection').then((m) => ({ default: m.FaqSection }))
+);
+const FinalCta = lazy(() =>
+  import('./components/FinalCta').then((m) => ({ default: m.FinalCta }))
+);
+const Footer = lazy(() =>
+  import('./components/Footer').then((m) => ({ default: m.Footer }))
+);
+const StickyBottomCta = lazy(() =>
+  import('./components/StickyBottomCta').then((m) => ({ default: m.StickyBottomCta }))
+);
 
 // Code-split Modals loaded on-demand
 const CheckoutModal = lazy(() =>
@@ -31,32 +53,63 @@ export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAlegriaOfferOpen, setIsAlegriaOfferOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan | null>(PRICING_PLANS[1]); // Default to Alegria + Bônus
+  const [isBelowFoldReady, setIsBelowFoldReady] = useState(false);
+
+  // Progressive hydration: Give immediate 100% CPU priority to Hero (FCP & LCP)
+  useEffect(() => {
+    const onUserInteraction = () => setIsBelowFoldReady(true);
+    window.addEventListener('scroll', onUserInteraction, { passive: true, once: true });
+    window.addEventListener('touchstart', onUserInteraction, { passive: true, once: true });
+
+    const scheduleMount = () => setIsBelowFoldReady(true);
+    if ('requestIdleCallback' in window) {
+      const handle = window.requestIdleCallback(scheduleMount, { timeout: 120 });
+      return () => {
+        window.cancelIdleCallback(handle);
+        window.removeEventListener('scroll', onUserInteraction);
+        window.removeEventListener('touchstart', onUserInteraction);
+      };
+    } else {
+      const timer = setTimeout(scheduleMount, 40);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('scroll', onUserInteraction);
+        window.removeEventListener('touchstart', onUserInteraction);
+      };
+    }
+  }, []);
 
   const scrollToPricing = () => {
-    const el = document.getElementById('ofertas') || document.getElementById('precos');
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const targetY = rect.top + scrollTop - 45; // Offset for sticky top urgency bar
-      
-      window.scrollTo({
-        top: Math.max(0, targetY),
-        behavior: 'smooth',
-      });
+    setIsBelowFoldReady(true);
+    setTimeout(() => {
+      const el = document.getElementById('ofertas') || document.getElementById('precos');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const targetY = rect.top + scrollTop - 45; // Offset for sticky top urgency bar
+        
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: 'smooth',
+        });
 
-      try {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } catch {
-        // Fallback already handled by window.scrollTo
+        try {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch {
+          // Fallback already handled by window.scrollTo
+        }
       }
-    }
+    }, 10);
   };
 
   const scrollToNext = () => {
-    const el = document.getElementById('o-que-vai-receber') || document.getElementById('demonstracao');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    setIsBelowFoldReady(true);
+    setTimeout(() => {
+      const el = document.getElementById('o-que-vai-receber') || document.getElementById('demonstracao');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 10);
   };
 
   const handleSelectPlan = (plan: PricingPlan) => {
@@ -84,45 +137,50 @@ export default function App() {
       <UrgencyBar onCtaClick={scrollToPricing} />
 
       <main className="flex-1">
-        {/* 2. Hero Section */}
+        {/* 2. Critical Hero Section (Immediate Render for FCP & LCP) */}
         <HeroSection
           onCtaClick={scrollToPricing}
           onScrollDown={scrollToNext}
         />
 
-        {/* 3. Section: O que você vai receber (Unificado com demonstração real das folhas + fotos) */}
-        <WhatYouReceive onCtaClick={scrollToPricing} />
+        {/* 3. Below-the-fold Progressive Content */}
+        {isBelowFoldReady && (
+          <Suspense fallback={<div className="min-h-[200px]" />}>
+            {/* O que você vai receber */}
+            <WhatYouReceive onCtaClick={scrollToPricing} />
 
-        {/* 4. Quem eu sou */}
-        <AboutCreator />
+            {/* Quem eu sou */}
+            <AboutCreator />
 
-        {/* 5. Prova Social: Testimonials + Quantified Mothers */}
-        <SocialProof />
+            {/* Prova Social: Testimonials + Quantified Mothers */}
+            <SocialProof />
 
-        {/* 6. Seção de Pacotes / Preços (Basic vs Pacote Alegria + Bônus) */}
-        <PricingSection
-          onSelectPlan={handleSelectPlan}
-          onSelectBasic={handleRequestBasic}
-        />
+            {/* Seção de Pacotes / Preços */}
+            <PricingSection
+              onSelectPlan={handleSelectPlan}
+              onSelectBasic={handleRequestBasic}
+            />
 
-        {/* 7. Selo de Garantia: 7 Dias + Compra Segura */}
-        <GuaranteeSection />
+            {/* Selo de Garantia: 7 Dias + Compra Segura */}
+            <GuaranteeSection />
 
-        {/* 8. Aviso Legal: Pirataria é Crime */}
-        <CopyrightDisclaimer />
+            {/* Aviso Legal: Pirataria é Crime */}
+            <CopyrightDisclaimer />
 
-        {/* 9. FAQ em formato acordeão */}
-        <FaqSection />
+            {/* FAQ em formato acordeão */}
+            <FaqSection />
 
-        {/* 10. CTA Final */}
-        <FinalCta onCtaClick={scrollToPricing} />
+            {/* CTA Final */}
+            <FinalCta onCtaClick={scrollToPricing} />
+
+            {/* Rodapé simples com direitos autorais */}
+            <Footer />
+
+            {/* Sticky Bottom Bar on Mobile */}
+            <StickyBottomCta onCtaClick={scrollToPricing} />
+          </Suspense>
+        )}
       </main>
-
-      {/* 11. Rodapé simples com direitos autorais */}
-      <Footer />
-
-      {/* Sticky Bottom Bar on Mobile */}
-      <StickyBottomCta onCtaClick={scrollToPricing} />
 
       {/* Lazy Modals loaded on-demand */}
       <Suspense fallback={null}>

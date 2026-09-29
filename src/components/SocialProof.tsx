@@ -364,19 +364,23 @@ export const SocialProof: React.FC = () => {
           </div>
 
           {/* Dots Indicator */}
-          <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center justify-center gap-1 mt-6">
             {SLIDES.map((_, dotIdx) => (
               <button
                 key={dotIdx}
                 type="button"
                 onClick={() => handleDotClick(dotIdx)}
                 aria-label={`Ir para depoimento ${dotIdx + 1}`}
-                className={`transition-all duration-300 rounded-full cursor-pointer ${
-                  activeDotIndex === dotIdx
-                    ? 'w-8 h-2.5 bg-pink-500'
-                    : 'w-2.5 h-2.5 bg-pink-200 hover:bg-pink-300'
-                }`}
-              />
+                className="p-2 flex items-center justify-center cursor-pointer min-w-[36px] min-h-[36px]"
+              >
+                <span
+                  className={`transition-all duration-300 rounded-full h-2.5 ${
+                    activeDotIndex === dotIdx
+                      ? 'w-8 bg-pink-500'
+                      : 'w-2.5 bg-pink-200 hover:bg-pink-300'
+                  }`}
+                />
+              </button>
             ))}
           </div>
         </div>

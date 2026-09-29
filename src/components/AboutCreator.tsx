@@ -21,7 +21,7 @@ export const AboutCreator: React.FC = () => {
                 <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden border-4 border-white shadow-lg bg-pink-50">
                   <img
                     src={ASSETS.momAvatar}
-                    alt="Lúcia Oliveira"
+                    alt="Foto de perfil de Lúcia Oliveira, criadora das bonecas de papel"
                     width={176}
                     height={176}
                     loading="lazy"

@@ -141,7 +141,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                     <div className="absolute inset-0 z-20 pointer-events-none">
                       <img
                         src={ASSETS.videoCover}
-                        alt="Apresentação do material"
+                        alt="Capa de apresentação das bonecas de papel prontas para imprimir e recortar"
                         width={320}
                         height={568}
                         loading="eager"
@@ -216,6 +216,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                   {hasStarted && (
                     <button
                       type="button"
+                      aria-label={isMuted ? "Ativar som do vídeo" : "Silenciar som do vídeo"}
                       onClick={(e) => {
                         e.stopPropagation();
                         handleToggleSound();
@@ -262,7 +263,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
         {/* Primary Pink CTA Button */}
         <div className="flex flex-col items-center justify-center gap-2 mb-6">
           <button
+            type="button"
             onClick={onCtaClick}
+            aria-label="Garantir agora mais de 300 bonecas de papel"
             className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-[#FF007A] via-[#E11D74] to-[#C026D3] hover:from-[#E11D74] hover:to-[#9333EA] text-white font-black text-lg sm:text-xl rounded-full shadow-lg shadow-pink-500/30 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer pulse-cta"
           >
             EU QUERO AGORA!
@@ -276,8 +279,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
 
         {/* Microtext / scroll down */}
         <button
+          type="button"
           onClick={onScrollDown}
-          className="group inline-flex flex-col items-center gap-1 text-xs sm:text-sm font-semibold text-slate-400 hover:text-pink-600 transition-colors cursor-pointer"
+          aria-label="Rolar a página para ver o que você vai receber"
+          className="group inline-flex flex-col items-center gap-1 text-xs sm:text-sm font-semibold text-slate-500 hover:text-pink-600 transition-colors cursor-pointer"
         >
           <span>Arraste para baixo</span>
           <ChevronDown className="w-4 h-4 text-pink-500 group-hover:translate-y-1 transition-transform animate-bounce" />

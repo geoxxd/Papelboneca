@@ -43,6 +43,7 @@ export const FaqSection: React.FC = () => {
                   type="button"
                   onClick={() => toggle(faq.id)}
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${faq.id}`}
                   className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 font-bold text-sm sm:text-base text-slate-800 hover:text-pink-600 transition-colors cursor-pointer select-none"
                 >
                   <span className="leading-snug">{faq.question}</span>
@@ -58,7 +59,12 @@ export const FaqSection: React.FC = () => {
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed pt-1 border-t border-pink-100/60 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <div
+                    id={`faq-answer-${faq.id}`}
+                    role="region"
+                    aria-labelledby={`faq-header-${faq.id}`}
+                    className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed pt-1 border-t border-pink-100/60 animate-in fade-in slide-in-from-top-1 duration-150"
+                  >
                     <p>{faq.answer}</p>
                   </div>
                 )}

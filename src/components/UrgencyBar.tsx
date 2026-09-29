@@ -47,14 +47,16 @@ export const UrgencyBar: React.FC<UrgencyBarProps> = ({ onCtaClick }) => {
       <div className="max-w-5xl mx-auto px-4 py-2 sm:py-2.5 flex items-center justify-center gap-2 text-xs sm:text-sm font-bold tracking-wide">
         <Flame className="w-4 h-4 animate-bounce text-yellow-300" fill="currentColor" />
         <span className="uppercase text-[11px] sm:text-xs tracking-wider">A PROMOÇÃO TERMINA EM</span>
-        <div className="flex items-center gap-1 bg-black/20 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-white/20 font-mono font-extrabold text-yellow-200">
-          <Clock className="w-3.5 h-3.5 text-yellow-300" />
+        <div className="flex items-center gap-1 bg-black/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-white/30 font-mono font-extrabold text-white">
+          <Clock className="w-3.5 h-3.5 text-amber-200" />
           <span className="tabular-nums">{formattedTime}</span>
         </div>
         {onCtaClick && (
           <button
+            type="button"
             onClick={onCtaClick}
-            className="hidden sm:inline-flex items-center text-xs underline font-semibold text-white/90 hover:text-white ml-2 cursor-pointer"
+            aria-label="Aproveitar oferta promocional das bonecas de papel"
+            className="hidden sm:inline-flex items-center text-xs underline font-semibold text-white hover:text-pink-100 ml-2 cursor-pointer"
           >
             Aproveitar oferta &rarr;
           </button>
