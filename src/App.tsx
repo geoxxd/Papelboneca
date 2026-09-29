@@ -7,6 +7,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import { UrgencyBar } from './components/UrgencyBar';
 import { HeroSection } from './components/HeroSection';
 import { WhatYouReceive } from './components/WhatYouReceive';
+import { ProductDemonstration } from './components/ProductDemonstration';
 import { AboutCreator } from './components/AboutCreator';
 import { SocialProof } from './components/SocialProof';
 import { PricingSection } from './components/PricingSection';
@@ -91,7 +92,10 @@ export default function App() {
         {/* 3. Section: O que você vai receber + Child Photo Gallery */}
         <WhatYouReceive />
 
-        {/* 4. NOVA SEÇÃO: Quem eu sou */}
+        {/* 4. SEÇÃO DE DEMONSTRAÇÃO: Veja o material por dentro (5 imagens reais) */}
+        <ProductDemonstration onCtaClick={scrollToPricing} />
+
+        {/* 5. Quem eu sou */}
         <AboutCreator />
 
         {/* 5. Prova Social: Testimonials + Quantified Mothers */}

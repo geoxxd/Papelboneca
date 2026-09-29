@@ -16,6 +16,11 @@ export const ASSETS = {
   provaKid3: '/storage/prova_kid_3.webp',
   provaKid4: '/storage/prova_kid_4.webp',
   provaKid5: '/storage/prova_kid_5.webp',
+  demonstracao1: '/storage/demonstracao_1.jpg',
+  demonstracao2: '/storage/demonstracao_2.jpg',
+  demonstracao3: '/storage/demonstracao_3.png',
+  demonstracao4: '/storage/demonstracao_4.jpg',
+  demonstracao5: '/storage/demonstracao_5.jpg',
 };
 
 export const WHAT_YOU_RECEIVE_ITEMS = [
@@ -81,6 +86,58 @@ export const GALLERY_ITEMS = [
     image: ASSETS.heroPhoneCut,
     caption: 'Fácil de recortar com abas anatômicas para prender as roupas',
     tag: 'Encaixe perfeito',
+  },
+];
+
+export interface DemonstrationItem {
+  id: string;
+  image: string;
+  title: string;
+  category: string;
+  description: string;
+  highlight: string;
+}
+
+export const DEMONSTRATION_ITEMS: DemonstrationItem[] = [
+  {
+    id: 'demo-1',
+    image: ASSETS.demonstracao1,
+    title: 'Modelos de Bonecas & Trocas de Roupas',
+    category: 'Pronto para Recortar',
+    description: 'Design pensado com abas de encaixe para a criança trocar de look com facilidade sem precisar colar.',
+    highlight: 'Traço nítido e delicado',
+  },
+  {
+    id: 'demo-2',
+    image: ASSETS.demonstracao2,
+    title: 'Coleções Temáticas Completas',
+    category: 'Variedade Encantadora',
+    description: 'Dezenas de estilos que despertam a imaginação: vestidos, conjuntos casuais, penteados e calçados combinando.',
+    highlight: 'Cores vivas para impressão',
+  },
+  {
+    id: 'demo-3',
+    image: ASSETS.demonstracao3,
+    title: 'Personagens Fofos e Detalhados',
+    category: 'Qualidade Digital',
+    description: 'Ilustrações de alta definição desenhadas para prender a atenção das pequenas longe das telas.',
+    highlight: 'Formato A4 padrão',
+  },
+  {
+    id: 'demo-4',
+    image: ASSETS.demonstracao4,
+    title: 'Cenários, Casinhas e Ambientes',
+    category: 'Mundo de Faz de Conta',
+    description: 'Cômodos e cenários lúdicos onde as crianças criam historinhas completas com suas bonecas.',
+    highlight: 'Estímulo à narrativa infantil',
+  },
+  {
+    id: 'demo-5',
+    image: ASSETS.demonstracao5,
+    title: 'Pets, Bichinhos e Acessórios',
+    category: 'Diversão em Família',
+    description: 'Companheiros fiéis de papel, bolsas, lacinhos e itens temáticos para deixar as brincadeiras ainda mais mágicas.',
+    highlight: 'Fácil recorte com tesoura sem ponta',
   },
 ];
 
