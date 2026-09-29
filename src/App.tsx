@@ -60,23 +60,25 @@ export default function App() {
     const onUserInteraction = () => setIsBelowFoldReady(true);
     window.addEventListener('scroll', onUserInteraction, { passive: true, once: true });
     window.addEventListener('touchstart', onUserInteraction, { passive: true, once: true });
+    window.addEventListener('pointerdown', onUserInteraction, { passive: true, once: true });
+    window.addEventListener('wheel', onUserInteraction, { passive: true, once: true });
 
-    const scheduleMount = () => setIsBelowFoldReady(true);
-    if ('requestIdleCallback' in window) {
-      const handle = window.requestIdleCallback(scheduleMount, { timeout: 120 });
-      return () => {
-        window.cancelIdleCallback(handle);
-        window.removeEventListener('scroll', onUserInteraction);
-        window.removeEventListener('touchstart', onUserInteraction);
-      };
-    } else {
-      const timer = setTimeout(scheduleMount, 40);
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('scroll', onUserInteraction);
-        window.removeEventListener('touchstart', onUserInteraction);
-      };
-    }
+    // Fallback after initial page settling
+    const timer = setTimeout(() => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => setIsBelowFoldReady(true), { timeout: 1000 });
+      } else {
+        setIsBelowFoldReady(true);
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', onUserInteraction);
+      window.removeEventListener('touchstart', onUserInteraction);
+      window.removeEventListener('pointerdown', onUserInteraction);
+      window.removeEventListener('wheel', onUserInteraction);
+    };
   }, []);
 
   const scrollToPricing = () => {

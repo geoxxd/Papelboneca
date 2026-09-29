@@ -80,7 +80,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
       <div className="max-w-4xl mx-auto px-4 text-center">
         {/* Playful mini pill */}
         <div className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full bg-pink-100 text-pink-700 text-xs font-bold tracking-wide shadow-xs">
-          <Sparkles className="w-3.5 h-3.5 text-pink-500 animate-spin" style={{ animationDuration: '4s' }} />
+          <Sparkles className="w-3.5 h-3.5 text-pink-500 shrink-0" />
           <span>O BRINQUEDO EDUCATIVO QUE CONQUISTOU AS MÃES</span>
         </div>
 
@@ -284,7 +284,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
           className="group inline-flex flex-col items-center gap-1 text-xs sm:text-sm font-semibold text-slate-500 hover:text-pink-600 transition-colors cursor-pointer"
         >
           <span>Arraste para baixo</span>
-          <ChevronDown className="w-4 h-4 text-pink-500 group-hover:translate-y-1 transition-transform animate-bounce" />
+          <ChevronDown className="w-4 h-4 text-pink-500 group-hover:translate-y-1 transition-transform" />
         </button>
       </div>
     </section>

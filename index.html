@@ -87,8 +87,12 @@
     <!-- LCP Image Preload for Instant First Contentful / Largest Contentful Paint -->
     <link rel="preload" as="image" href="/storage/capa_video.webp" type="image/webp" fetchpriority="high" />
 
-    <!-- Google Web Fonts with Swap -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" />
+    <!-- Non-Render-Blocking Web Fonts with Swap -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" />
+    </noscript>
 
     <!-- UTMify UTM Tracking & Pixel Scripts (Deferred to never block initial render) -->
     <script>

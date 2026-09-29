@@ -45,7 +45,7 @@ export const UrgencyBar: React.FC<UrgencyBarProps> = ({ onCtaClick }) => {
       className="sticky top-0 z-40 bg-gradient-to-r from-[#FF007A] via-[#E11D74] to-[#C026D3] text-white shadow-sm transition-all"
     >
       <div className="max-w-5xl mx-auto px-4 py-2 sm:py-2.5 flex items-center justify-center gap-2 text-xs sm:text-sm font-bold tracking-wide">
-        <Flame className="w-4 h-4 animate-bounce text-yellow-300" fill="currentColor" />
+        <Flame className="w-4 h-4 text-amber-300 shrink-0" fill="currentColor" />
         <span className="uppercase text-[11px] sm:text-xs tracking-wider">A PROMOÇÃO TERMINA EM</span>
         <div className="flex items-center gap-1 bg-black/30 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-white/30 font-mono font-extrabold text-white">
           <Clock className="w-3.5 h-3.5 text-amber-200" />
