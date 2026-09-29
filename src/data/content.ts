@@ -16,11 +16,11 @@ export const ASSETS = {
   provaKid3: '/storage/prova_kid_3.webp',
   provaKid4: '/storage/prova_kid_4.webp',
   provaKid5: '/storage/prova_kid_5.webp',
-  demonstracao1: '/storage/demonstracao_1.jpg',
-  demonstracao2: '/storage/demonstracao_2.jpg',
-  demonstracao3: '/storage/demonstracao_3.png',
-  demonstracao4: '/storage/demonstracao_4.jpg',
-  demonstracao5: '/storage/demonstracao_5.jpg',
+  demonstracao1: '/storage/demonstracao_1.webp',
+  demonstracao2: '/storage/demonstracao_2.webp',
+  demonstracao3: '/storage/demonstracao_3.webp',
+  demonstracao4: '/storage/demonstracao_4.webp',
+  demonstracao5: '/storage/demonstracao_5.webp',
 };
 
 export const WHAT_YOU_RECEIVE_ITEMS = [

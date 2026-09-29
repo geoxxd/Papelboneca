@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Eye, Printer, Scissors, Infinity as InfinityIcon, ArrowRight, X, ChevronLeft, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { DEMONSTRATION_ITEMS, DemonstrationItem } from '../data/content';
 
@@ -8,26 +8,91 @@ interface ProductDemonstrationProps {
 
 export const ProductDemonstration: React.FC<ProductDemonstrationProps> = ({ onCtaClick }) => {
   const [selectedItem, setSelectedItem] = useState<DemonstrationItem | null>(null);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [lightboxIndex, setLightboxIndex] = useState<number>(0);
+  const [activeSlide, setActiveSlide] = useState<number>(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const isUserInteractingRef = useRef<boolean>(false);
 
   const handleOpenLightbox = (item: DemonstrationItem, index: number) => {
     setSelectedItem(item);
-    setCurrentIndex(index);
+    setLightboxIndex(index);
   };
 
-  const handlePrev = (e: React.MouseEvent) => {
+  const handlePrevLightbox = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const newIndex = (currentIndex - 1 + DEMONSTRATION_ITEMS.length) % DEMONSTRATION_ITEMS.length;
-    setCurrentIndex(newIndex);
+    const newIndex = (lightboxIndex - 1 + DEMONSTRATION_ITEMS.length) % DEMONSTRATION_ITEMS.length;
+    setLightboxIndex(newIndex);
     setSelectedItem(DEMONSTRATION_ITEMS[newIndex]);
   };
 
-  const handleNext = (e: React.MouseEvent) => {
+  const handleNextLightbox = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const newIndex = (currentIndex + 1) % DEMONSTRATION_ITEMS.length;
-    setCurrentIndex(newIndex);
+    const newIndex = (lightboxIndex + 1) % DEMONSTRATION_ITEMS.length;
+    setLightboxIndex(newIndex);
     setSelectedItem(DEMONSTRATION_ITEMS[newIndex]);
   };
+
+  // Scroll carousel to specific slide index
+  const scrollToSlide = (index: number) => {
+    if (!carouselRef.current) return;
+    const container = carouselRef.current;
+    const card = container.children[index] as HTMLElement;
+    if (card) {
+      const scrollLeft = card.offsetLeft - (container.clientWidth - card.clientWidth) / 2;
+      container.scrollTo({
+        left: Math.max(0, scrollLeft),
+        behavior: 'smooth',
+      });
+      setActiveSlide(index);
+    }
+  };
+
+  const handlePrevCarousel = () => {
+    const newIndex = (activeSlide - 1 + DEMONSTRATION_ITEMS.length) % DEMONSTRATION_ITEMS.length;
+    scrollToSlide(newIndex);
+  };
+
+  const handleNextCarousel = () => {
+    const newIndex = (activeSlide + 1) % DEMONSTRATION_ITEMS.length;
+    scrollToSlide(newIndex);
+  };
+
+  // Listen to scroll to update active slide indicator
+  const handleScroll = () => {
+    if (!carouselRef.current) return;
+    const container = carouselRef.current;
+    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    Array.from(container.children).forEach((child, index) => {
+      const card = child as HTMLElement;
+      const cardCenter = card.offsetLeft + card.clientWidth / 2;
+      const distance = Math.abs(containerCenter - cardCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setActiveSlide(closestIndex);
+  };
+
+  // Optional auto-slide when user is not touching or hovering
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isUserInteractingRef.current && !selectedItem) {
+        setActiveSlide((prev) => {
+          const next = (prev + 1) % DEMONSTRATION_ITEMS.length;
+          scrollToSlide(next);
+          return next;
+        });
+      }
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [selectedItem]);
 
   return (
     <section id="demonstracao" className="py-16 sm:py-24 bg-gradient-to-b from-[#FFF5F8] via-white to-[#FFF0F5] relative overflow-hidden">
@@ -38,7 +103,7 @@ export const ProductDemonstration: React.FC<ProductDemonstrationProps> = ({ onCt
       <div className="max-w-6xl mx-auto px-4 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
           <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-pink-100 text-pink-700 text-xs sm:text-sm font-extrabold uppercase tracking-wider mb-3 shadow-xs">
             <Sparkles className="w-4 h-4 text-pink-500 animate-spin-slow" />
             <span>VEJA O MATERIAL POR DENTRO</span>
@@ -56,78 +121,143 @@ export const ProductDemonstration: React.FC<ProductDemonstrationProps> = ({ onCt
           </p>
         </div>
 
-        {/* Product Showcase Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
-          {DEMONSTRATION_ITEMS.map((item, index) => {
-            const isFeatured = index === 0;
-            return (
-              <div
-                key={item.id}
-                onClick={() => handleOpenLightbox(item, index)}
-                className={`group relative bg-white rounded-3xl overflow-hidden border transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1.5 cursor-pointer flex flex-col ${
-                  isFeatured
-                    ? 'border-pink-300 ring-2 ring-pink-400/20 sm:col-span-2 lg:col-span-1'
-                    : 'border-pink-100 hover:border-pink-300'
-                }`}
-              >
-                {/* Image Container */}
-                <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+        {/* Carousel Wrapper */}
+        <div
+          className="relative mb-6 sm:mb-8"
+          onMouseEnter={() => { isUserInteractingRef.current = true; }}
+          onMouseLeave={() => { isUserInteractingRef.current = false; }}
+          onTouchStart={() => { isUserInteractingRef.current = true; }}
+          onTouchEnd={() => {
+            setTimeout(() => {
+              isUserInteractingRef.current = false;
+            }, 3000);
+          }}
+        >
+          {/* Navigation Arrows for Desktop & Tablet */}
+          <button
+            onClick={handlePrevCarousel}
+            aria-label="Item anterior"
+            className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 text-slate-800 hover:text-pink-600 shadow-xl border border-pink-100 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
 
-                  {/* Gradient Overlay & Zoom Hint */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="px-3.5 py-1.5 rounded-full bg-white/95 text-slate-900 text-xs font-black shadow-lg flex items-center gap-1.5 transform scale-90 group-hover:scale-100 transition-transform">
-                      <Eye className="w-3.5 h-3.5 text-pink-600" />
-                      Clique para ampliar
-                    </span>
-                  </div>
+          <button
+            onClick={handleNextCarousel}
+            aria-label="Próximo item"
+            className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 text-slate-800 hover:text-pink-600 shadow-xl border border-pink-100 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer backdrop-blur-xs"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
 
-                  {/* Category Pill */}
-                  <div className="absolute top-3 left-3">
-                    <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/95 text-pink-700 shadow-xs backdrop-blur-xs">
+          {/* Carousel Track with Smooth Touch & Scroll Snap */}
+          <div
+            ref={carouselRef}
+            onScroll={handleScroll}
+            className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth py-4 px-2 sm:px-4 no-scrollbar -mx-2 sm:mx-0"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
+            {DEMONSTRATION_ITEMS.map((item, index) => {
+              const isActive = activeSlide === index;
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => handleOpenLightbox(item, index)}
+                  className={`group relative w-[85vw] sm:w-[360px] md:w-[400px] shrink-0 snap-center bg-white rounded-3xl overflow-hidden border transition-all duration-300 shadow-md hover:shadow-2xl hover:-translate-y-1.5 cursor-pointer flex flex-col ${
+                    isActive
+                      ? 'border-pink-300 ring-2 ring-pink-400/25 shadow-lg'
+                      : 'border-pink-100 hover:border-pink-300'
+                  }`}
+                >
+                  {/* Top Header Strip: Badges outside the image so nothing covers the drawing */}
+                  <div className="px-4 py-3 flex items-center justify-between border-b border-pink-50 bg-gradient-to-r from-pink-50/50 via-white to-pink-50/30">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-pink-100/90 text-pink-700">
                       {item.category}
                     </span>
-                  </div>
-
-                  {isFeatured && (
-                    <div className="absolute top-3 right-3">
-                      <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-xs">
+                    {index === 0 ? (
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-xs">
                         ★ Destaque
                       </span>
+                    ) : (
+                      <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+                        <Eye className="w-3.5 h-3.5 text-pink-500" /> Folha completa
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Full Image Container - 100% complete without any cropping */}
+                  <div className="relative h-[360px] sm:h-[420px] w-full p-3 sm:p-4 bg-gradient-to-b from-[#FFFDFD] via-pink-50/20 to-white flex items-center justify-center overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      width={400}
+                      height={420}
+                      loading="lazy"
+                      decoding="async"
+                      className="max-h-full max-w-full w-auto h-auto object-contain rounded-xl drop-shadow-md group-hover:scale-[1.02] transition-transform duration-300 select-none"
+                    />
+
+                    {/* Gradient Overlay & Zoom Hint */}
+                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                      <span className="px-3.5 py-1.5 rounded-full bg-white/95 text-slate-900 text-xs font-black shadow-lg flex items-center gap-1.5 transform scale-90 group-hover:scale-100 transition-transform">
+                        <Eye className="w-3.5 h-3.5 text-pink-600" />
+                        Toque para ampliar
+                      </span>
                     </div>
-                  )}
-                </div>
-
-                {/* Card Content */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-                  <div>
-                    <h3 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-pink-600 transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1 line-clamp-2 font-medium leading-relaxed">
-                      {item.description}
-                    </p>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-emerald-700 font-bold">
-                    <span className="flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      {item.highlight}
-                    </span>
-                    <span className="text-pink-600 font-extrabold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      Ver foto &rarr;
-                    </span>
+                  {/* Card Content */}
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3 bg-white border-t border-slate-100">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-pink-600 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-slate-500 mt-1 line-clamp-2 font-medium leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-emerald-700 font-bold">
+                      <span className="flex items-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                        {item.highlight}
+                      </span>
+                      <span className="text-pink-600 font-extrabold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Ver tela cheia &rarr;
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          {/* Dots Indicator & Slide Counter */}
+          <div className="flex items-center justify-center gap-2 mt-4">
+            {DEMONSTRATION_ITEMS.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollToSlide(index)}
+                aria-label={`Ir para demonstração ${index + 1}`}
+                className={`transition-all duration-300 rounded-full h-2.5 cursor-pointer ${
+                  activeSlide === index
+                    ? 'w-8 bg-gradient-to-r from-[#FF007A] to-[#C026D3]'
+                    : 'w-2.5 bg-pink-200 hover:bg-pink-300'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Helper Drag Tip on Mobile */}
+          <div className="text-center mt-2.5 sm:hidden">
+            <span className="text-[11px] font-semibold text-slate-400">
+              👈 Arraste para o lado para ver todas as fotos 👉
+            </span>
+          </div>
         </div>
 
         {/* Trust Badges */}
@@ -195,7 +325,7 @@ export const ProductDemonstration: React.FC<ProductDemonstrationProps> = ({ onCt
             <div className="p-4 sm:p-5 flex items-center justify-between border-b border-slate-100 bg-white">
               <div>
                 <span className="text-[11px] font-black uppercase tracking-wider text-pink-600 block">
-                  {selectedItem.category} ({currentIndex + 1} de {DEMONSTRATION_ITEMS.length})
+                  {selectedItem.category} ({lightboxIndex + 1} de {DEMONSTRATION_ITEMS.length})
                 </span>
                 <h3 className="text-base sm:text-lg font-black text-slate-900">
                   {selectedItem.title}
@@ -210,23 +340,23 @@ export const ProductDemonstration: React.FC<ProductDemonstrationProps> = ({ onCt
             </div>
 
             {/* Lightbox Image Container */}
-            <div className="relative flex-1 bg-slate-950 flex items-center justify-center overflow-hidden min-h-[300px]">
+            <div className="relative flex-1 bg-slate-950 flex items-center justify-center overflow-hidden min-h-[320px] p-2 sm:p-4">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.title}
-                className="max-h-[60vh] w-auto max-w-full object-contain mx-auto"
+                className="max-h-[72vh] w-auto max-w-full object-contain mx-auto select-none rounded-lg"
               />
 
               {/* Prev / Next Navigation Arrows */}
               <button
-                onClick={handlePrev}
+                onClick={handlePrevLightbox}
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center backdrop-blur-xs transition cursor-pointer"
                 aria-label="Foto anterior"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
-                onClick={handleNext}
+                onClick={handleNextLightbox}
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center backdrop-blur-xs transition cursor-pointer"
                 aria-label="Próxima foto"
               >
