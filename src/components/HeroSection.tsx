@@ -157,9 +157,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                   {/* Tela Inicial: Clique para começar a assistir */}
                   {!hasStarted && (
                     <div className="absolute inset-0 z-40 flex flex-col items-center justify-center p-4 text-center select-none animate-in fade-in duration-300">
-                      {/* Botão de Play Pulsante com Efeito Radial */}
+                      {/* Botão de Play Estático e Elegante */}
                       <div className="relative">
-                        <div className="absolute -inset-3 rounded-full bg-pink-500/50 animate-ping pointer-events-none" />
                         <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-full bg-gradient-to-tr from-[#FF007A] via-[#E11D74] to-[#9333EA] text-white flex items-center justify-center shadow-2xl shadow-pink-500/90 border-4 border-white transform hover:scale-105 active:scale-95 transition-all">
                           <Play className="w-9 h-9 sm:w-10 sm:h-10 fill-white ml-1.5 drop-shadow-md" />
                         </div>
@@ -173,7 +172,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                       </div>
 
                       <span className="mt-2 text-xs text-white font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
+                        <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
                         Veja como funciona na prática
                       </span>
                     </div>
@@ -182,8 +181,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                   {/* Mensagem e Overlay de Pausa (Estilo VSL VTurb) */}
                   {hasStarted && isPaused && (
                     <div className="absolute inset-0 z-40 bg-black/60 backdrop-blur-2xs flex flex-col items-center justify-center p-4 text-center select-none animate-in fade-in duration-200">
-                      {/* Botão de Play Pulsante */}
-                      <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-gradient-to-tr from-[#FF007A] via-[#E11D74] to-[#9333EA] text-white flex items-center justify-center shadow-2xl shadow-pink-500/70 border-2 border-white/90 transform hover:scale-105 active:scale-95 transition-transform animate-pulse">
+                      {/* Botão de Play */}
+                      <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-gradient-to-tr from-[#FF007A] via-[#E11D74] to-[#9333EA] text-white flex items-center justify-center shadow-2xl shadow-pink-500/70 border-2 border-white/90 transform hover:scale-105 active:scale-95 transition-transform">
                         <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-white ml-1" />
                       </div>
 
