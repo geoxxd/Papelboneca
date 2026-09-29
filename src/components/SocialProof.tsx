@@ -191,19 +191,27 @@ export const SocialProof: React.FC = () => {
     <section id="depoimentos" className="py-16 sm:py-20 bg-white overflow-hidden min-h-[560px]">
       <div className="max-w-6xl mx-auto px-4 text-center">
         {/* Title */}
-        <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-3">
           Veja o que as mães estão dizendo
         </h2>
 
         {/* Quantified mothers count with stars */}
-        <div className="inline-flex items-center gap-1.5 text-sm sm:text-base font-bold text-slate-700 mb-10">
-          <div className="flex items-center text-amber-400">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-400" />
-            ))}
+        <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2.5 px-4 py-2 sm:py-1.5 rounded-2xl sm:rounded-full bg-amber-50/80 border border-amber-200/80 shadow-2xs mb-6 sm:mb-10 max-w-[95%] sm:max-w-none mx-auto">
+          <div className="flex items-center gap-1">
+            <div className="flex items-center text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400" />
+              ))}
+            </div>
+            <span className="text-amber-900 font-black text-xs sm:text-sm ml-0.5">4.9/5</span>
           </div>
-          <span className="text-slate-800 font-extrabold ml-1">Mais de 9.435</span>
-          <span className="text-slate-500 font-medium">mães já baixaram e aprovaram</span>
+
+          <span className="hidden sm:inline text-amber-300 text-xs">•</span>
+
+          <div className="text-xs sm:text-sm text-slate-700 font-medium text-center leading-tight">
+            <span className="text-slate-900 font-extrabold">Mais de 9.435</span>{' '}
+            <span className="text-slate-600">mães já baixaram e aprovaram</span>
+          </div>
         </div>
 
         {/* Carousel Container */}
@@ -219,9 +227,9 @@ export const SocialProof: React.FC = () => {
             type="button"
             onClick={handlePrev}
             aria-label="Depoimento anterior"
-            className="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 border-2 border-pink-200 text-pink-600 shadow-lg hover:bg-pink-500 hover:text-white hover:border-pink-500 hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
+            className="absolute -left-1 sm:-left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border-2 border-pink-200 text-pink-600 shadow-md hover:bg-pink-500 hover:text-white hover:border-pink-500 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           {/* Arrow Right */}
@@ -229,9 +237,9 @@ export const SocialProof: React.FC = () => {
             type="button"
             onClick={handleNext}
             aria-label="Próximo depoimento"
-            className="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 border-2 border-pink-200 text-pink-600 shadow-lg hover:bg-pink-500 hover:text-white hover:border-pink-500 hover:scale-110 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
+            className="absolute -right-1 sm:-right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/95 border-2 border-pink-200 text-pink-600 shadow-md hover:bg-pink-500 hover:text-white hover:border-pink-500 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           {/* Carousel Viewport */}

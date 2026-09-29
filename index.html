@@ -4,6 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>+300 Bonecas de Papel - Página de Vendas</title>
+
+    <!-- Circular Reference Protection for Analytics & Debug Wrappers -->
+    <script>
+      (function() {
+        var origStringify = JSON.stringify;
+        JSON.stringify = function(value, replacer, space) {
+          var seen = new WeakSet();
+          function safeReplacer(key, val) {
+            if (typeof val === 'object' && val !== null) {
+              if (typeof val.nodeType === 'number') {
+                return {
+                  nodeType: val.nodeType,
+                  tagName: val.tagName || undefined,
+                  id: val.id || undefined,
+                  className: typeof val.className === 'string' ? val.className : undefined
+                };
+              }
+              if (seen.has(val)) {
+                return '[Circular]';
+              }
+              seen.add(val);
+            }
+            if (typeof replacer === 'function') {
+              return replacer.call(this, key, val);
+            }
+            return val;
+          }
+          try {
+            return origStringify.call(this, value, replacer || safeReplacer, space);
+          } catch (err) {
+            return origStringify.call(this, value, safeReplacer, space);
+          }
+        };
+
+        ['log', 'warn', 'error', 'info', 'debug'].forEach(function(method) {
+          var orig = console[method];
+          if (typeof orig === 'function') {
+            console[method] = function() {
+              var args = Array.prototype.slice.call(arguments);
+              try {
+                orig.apply(console, args);
+              } catch (e) {
+                var safeArgs = args.map(function(arg) {
+                  if (arg && typeof arg === 'object' && typeof arg.nodeType === 'number') {
+                    return '[Element <' + (arg.tagName || 'node').toLowerCase() + (arg.id ? '#' + arg.id : '') + '>]';
+                  }
+                  return arg;
+                });
+                orig.apply(console, safeArgs);
+              }
+            };
+          }
+        });
+
+        window.addEventListener('error', function(event) {
+          if (event && event.message && event.message.indexOf('Converting circular structure to JSON') !== -1) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
     <meta name="description" content="PDF digital com mais de 300 bonecas de papel para imprimir, recortar e montar. Brinquedo educativo e diversão garantida longe das telas." />
     <meta property="og:title" content="+300 Bonecas de Papel - Diversão Longe das Telas" />
     <meta property="og:description" content="PDF digital com bonecas de papel para imprimir, recortar e montar. Prontas em minutos!" />
@@ -13,6 +76,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://pay.lowify.com.br">
+    <link rel="preconnect" href="https://pay.lowify.com.br" crossorigin>
 
     <!-- LCP Image Preload for Instant First Contentful / Largest Contentful Paint -->
     <link rel="preload" as="image" href="/storage/capa_video.webp" type="image/webp" fetchpriority="high" />

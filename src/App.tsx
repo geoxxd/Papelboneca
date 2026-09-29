@@ -7,7 +7,6 @@ import React, { useState, lazy, Suspense } from 'react';
 import { UrgencyBar } from './components/UrgencyBar';
 import { HeroSection } from './components/HeroSection';
 import { WhatYouReceive } from './components/WhatYouReceive';
-import { ProductDemonstration } from './components/ProductDemonstration';
 import { AboutCreator } from './components/AboutCreator';
 import { SocialProof } from './components/SocialProof';
 import { PricingSection } from './components/PricingSection';
@@ -19,11 +18,13 @@ import { Footer } from './components/Footer';
 import { StickyBottomCta } from './components/StickyBottomCta';
 import { PricingPlan } from './types';
 import { PRICING_PLANS, ALEGRIA_SPECIAL_OFFER } from './data/content';
-import { AlegriaOfferModal } from './components/AlegriaOfferModal';
 
-// Code-split CheckoutModal
+// Code-split Modals loaded on-demand
 const CheckoutModal = lazy(() =>
   import('./components/CheckoutModal').then((m) => ({ default: m.CheckoutModal }))
+);
+const AlegriaOfferModal = lazy(() =>
+  import('./components/AlegriaOfferModal').then((m) => ({ default: m.AlegriaOfferModal }))
 );
 
 export default function App() {
@@ -52,7 +53,7 @@ export default function App() {
   };
 
   const scrollToNext = () => {
-    const el = document.getElementById('o-que-vai-receber');
+    const el = document.getElementById('o-que-vai-receber') || document.getElementById('demonstracao');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -89,13 +90,10 @@ export default function App() {
           onScrollDown={scrollToNext}
         />
 
-        {/* 3. Section: O que você vai receber + Child Photo Gallery */}
-        <WhatYouReceive />
+        {/* 3. Section: O que você vai receber (Unificado com demonstração real das folhas + fotos) */}
+        <WhatYouReceive onCtaClick={scrollToPricing} />
 
-        {/* 4. SEÇÃO DE DEMONSTRAÇÃO: Veja o material por dentro (5 imagens reais) */}
-        <ProductDemonstration onCtaClick={scrollToPricing} />
-
-        {/* 5. Quem eu sou */}
+        {/* 4. Quem eu sou */}
         <AboutCreator />
 
         {/* 5. Prova Social: Testimonials + Quantified Mothers */}
@@ -126,18 +124,16 @@ export default function App() {
       {/* Sticky Bottom Bar on Mobile */}
       <StickyBottomCta onCtaClick={scrollToPricing} />
 
-      {/* Instant Upsell Offer Modal */}
-      {isAlegriaOfferOpen && (
-        <AlegriaOfferModal
-          isOpen={isAlegriaOfferOpen}
-          onClose={() => setIsAlegriaOfferOpen(false)}
-          onAcceptAlegria={handleAcceptAlegriaOffer}
-          onContinueBasic={handleContinueWithBasic}
-        />
-      )}
-
       {/* Lazy Modals loaded on-demand */}
       <Suspense fallback={null}>
+        {isAlegriaOfferOpen && (
+          <AlegriaOfferModal
+            isOpen={isAlegriaOfferOpen}
+            onClose={() => setIsAlegriaOfferOpen(false)}
+            onAcceptAlegria={handleAcceptAlegriaOffer}
+            onContinueBasic={handleContinueWithBasic}
+          />
+        )}
         {isCheckoutOpen && (
           <CheckoutModal
             isOpen={isCheckoutOpen}

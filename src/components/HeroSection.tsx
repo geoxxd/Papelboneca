@@ -145,6 +145,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onCtaClick, onScrollDo
                         width={320}
                         height={568}
                         loading="eager"
+                        fetchPriority="high"
                         decoding="async"
                         className="w-full h-full object-cover"
                       />
